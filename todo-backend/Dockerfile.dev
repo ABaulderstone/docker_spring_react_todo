@@ -1,0 +1,22 @@
+# Use the official OpenJDK 21 image
+FROM openjdk:21
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the Maven wrapper and pom.xml file
+COPY pom.xml ./
+COPY .mvn .mvn
+COPY mvnw ./
+
+# Copy the source code
+COPY src ./src
+
+# Install dependencies
+RUN ./mvnw dependency:resolve
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the Spring Boot application
+CMD ["./mvnw", "spring-boot:run"]
