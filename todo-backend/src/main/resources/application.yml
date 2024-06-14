@@ -9,3 +9,7 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
+      expiration-time: ${JWT_EXPIRY:3600000}
