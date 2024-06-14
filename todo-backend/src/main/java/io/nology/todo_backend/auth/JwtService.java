@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,10 @@ public class JwtService {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-    @Getter
     @Value("${security.jwt.exiration-time}")
     private long jwtExpiry;
 
-    public String extractEmail(String token) {
+    public String extractId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -35,17 +35,23 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(CustomUserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiry);
+    public String generateToken(Map<String, Object> extraClaims, CustomUserDetails userDetails) {
+        return buildToken(extraClaims, jwtExpiry, userDetails);
     }
 
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiry) {
+    public boolean isTokenValid(String token) {
+        final String id = extractId(token);
+        return !id.equals(null) && !isTokenExpired(token);
+    }
+
+    private String buildToken(Map<String, Object> extraClaims, long expiry, CustomUserDetails userDetails) {
+
         long now = System.currentTimeMillis();
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getId().toString())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + expiry))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -54,6 +60,10 @@ public class JwtService {
 
     private Date extractExipration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExipration(token).before(new Date());
     }
 
     private Claims extractAllClaims(String token) {
