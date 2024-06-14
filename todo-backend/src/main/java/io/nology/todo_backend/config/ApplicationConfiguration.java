@@ -5,10 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import io.nology.todo_backend.auth.CustomUserDetails;
 import io.nology.todo_backend.auth.CustomUserDetailsService;
 import io.nology.todo_backend.user.UserRepository;
 
