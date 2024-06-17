@@ -20,7 +20,8 @@ public class RegisterDTO {
     private String password;
     @NotBlank
     @NotEmpty
-    @Matches(field = "password", message = "Password Confirm does not Match Password")
+    // @Matches(field = "password", message = "Password Confirm does not Match
+    // Password")
     private String passwordConfirm;
 
     public RegisterDTO() {

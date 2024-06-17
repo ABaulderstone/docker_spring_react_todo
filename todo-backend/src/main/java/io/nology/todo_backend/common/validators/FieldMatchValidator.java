@@ -24,7 +24,9 @@ public class FieldMatchValidator implements ConstraintValidator<Matches, Object>
             Field field = bean.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
             Object fieldValue = field.get(bean);
+            System.out.println(String.format("Field value: %s  field name: %s", fieldValue, fieldName));
             return value.equals(fieldValue);
+
         } catch (Exception e) {
             return false;
         }
