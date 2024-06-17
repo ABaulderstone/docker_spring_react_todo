@@ -9,7 +9,7 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Constraint(validatedBy = FieldMatchValidator.class)
-@Target({ ElementType.FIELD, ElementType.ANNOTATION_TYPE })
+@Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Matches {
     String message() default "Fields do not match";
@@ -19,4 +19,6 @@ public @interface Matches {
     Class<? extends Payload>[] payload() default {};
 
     String field();
+
+    String matchingField();
 }

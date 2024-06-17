@@ -1,44 +1,33 @@
 package io.nology.todo_backend.common.validators;
 
-import java.lang.reflect.Field;
-
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.BeanWrapperImpl;
 
 public class FieldMatchValidator implements ConstraintValidator<Matches, Object> {
 
     private String fieldName;
+    private String matchingFieldName;
 
     @Override
     public void initialize(Matches constraintAnnotation) {
         this.fieldName = constraintAnnotation.field();
+        this.matchingFieldName = constraintAnnotation.matchingField();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         if (value == null) {
-            return false;
+            return true; // Use @NotNull for null checks
         }
-        try {
-            Object bean = getRootBean(context);
-            Field field = bean.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            Object fieldValue = field.get(bean);
-            System.out.println(String.format("Field value: %s  field name: %s", fieldValue, fieldName));
-            return value.equals(fieldValue);
 
-        } catch (Exception e) {
-            return false;
-        }
-    }
+        Object fieldValue = new BeanWrapperImpl(value).getPropertyValue(fieldName);
+        Object matchingFieldValue = new BeanWrapperImpl(value).getPropertyValue(matchingFieldName);
 
-    private Object getRootBean(ConstraintValidatorContext context) {
-        try {
-            Field field = context.getClass().getDeclaredField("rootBean");
-            field.setAccessible(true);
-            return field.get(context);
-        } catch (Exception e) {
-            throw new RuntimeException("Unable to access root bean");
+        if (fieldValue != null) {
+            return fieldValue.equals(matchingFieldValue);
+        } else {
+            return matchingFieldValue == null;
         }
     }
 }
