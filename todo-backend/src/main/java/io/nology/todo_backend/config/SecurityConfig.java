@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import io.nology.todo_backend.auth.JwtAuthFilter;
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -36,10 +37,13 @@ public class SecurityConfig {
         http.csrf(CsrfConfigurer::disable)
                 .cors(c -> c.configurationSource(corsConfigSource))
                 .authorizeHttpRequests(
-                        a -> a.requestMatchers("/auth/*").permitAll()
+                        a -> a.requestMatchers("/auth/*").permitAll().dispatcherTypeMatchers(DispatcherType.ERROR)
+                                .permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // .exceptionHandling(eh -> eh.authenticationEntryPoint(null))
+                .exceptionHandling(
+                        eh -> eh.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                                .accessDeniedHandler(new CustomAccessDeniedHandler()))
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
