@@ -1,13 +1,23 @@
 package io.nology.todo_backend.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+
+import jakarta.annotation.PostConstruct;
 
 @Configuration
-@ConfigurationProperties(prefix = "spring.security.jwt")
 public class JwtProperties {
+    @Autowired
+    private Environment env;
     private String secretKey;
     private long expirationTime;
+
+    @PostConstruct
+    private void init() {
+        this.secretKey = env.getProperty("JWT_SECRET_KEY");
+        this.expirationTime = Long.parseLong(env.getProperty("JWT_EXPIRY"));
+    }
 
     public String getSecretKey() {
         return secretKey;
