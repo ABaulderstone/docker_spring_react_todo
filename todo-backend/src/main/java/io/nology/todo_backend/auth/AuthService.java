@@ -47,12 +47,13 @@ public class AuthService {
     }
 
     public TokenResponseDTO login(@Valid LoginDTO data) {
+        // loadUserByUsername will throw an exception if email not found
         CustomUserDetails userDetails = (CustomUserDetails) this.userDetailsService.loadUserByUsername(data.getEmail());
-        System.out.println(userDetails);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(data.getEmail(),
                 data.getPassword());
-        System.out.println(authToken);
+        // magic password compare check happens in auth manager
         this.authManager.authenticate(authToken);
+        // TODO: Clean this response up a bit
         TokenResponseDTO response = new TokenResponseDTO();
         String token = this.jwtService.generateToken(userDetails);
         response.setToken(token);
