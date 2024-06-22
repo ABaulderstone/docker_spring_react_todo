@@ -12,6 +12,9 @@ COPY mvnw ./
 # Copy the source code
 COPY src ./src
 
+# Create logs directory and set permissions
+RUN mkdir -p /app/logs && chmod 777 /app/logs
+
 # Install dependencies
 RUN ./mvnw dependency:resolve
 

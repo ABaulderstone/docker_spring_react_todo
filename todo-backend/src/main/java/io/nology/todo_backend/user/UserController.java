@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private UserService userService;
+    private static final Logger logger = LogManager.getLogger(UserController.class);
 
     @Autowired
     UserController(UserService userService) {
@@ -24,6 +28,8 @@ public class UserController {
     public ResponseEntity<User> currentUser() throws NumberFormatException, Exception {
         Authentication authenticationObj = SecurityContextHolder.getContext().getAuthentication();
         String currentId = (String) authenticationObj.getPrincipal();
+        logger.info("Testing info log");
+        logger.error("Testing error log");
         User currentUser = this.userService.loadById(Long.parseLong(currentId))
                 .orElseThrow(() -> new Exception("No user"));
         return new ResponseEntity<User>(currentUser, HttpStatus.OK);
