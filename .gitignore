@@ -1,4 +1,4 @@
 .vscode
 .env
 db/data
-todo-backend/logs
+todo-backend/logs/*.log
