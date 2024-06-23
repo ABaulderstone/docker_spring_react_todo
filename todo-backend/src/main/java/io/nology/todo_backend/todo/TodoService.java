@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
 
+import io.nology.todo_backend.common.BaseService;
 import io.nology.todo_backend.user.User;
 import jakarta.validation.Valid;
 
 @Service
-public class TodoService {
+public class TodoService extends BaseService {
     private final TodoRepository todoRepository;
     private final ModelMapper mapper;
 
@@ -23,18 +23,15 @@ public class TodoService {
     }
 
     List<Todo> findCurrentUserTodos() {
-        Authentication authenticationObj = SecurityContextHolder.getContext().getAuthentication();
-        String currentId = (String) authenticationObj.getPrincipal();
-
-        return this.todoRepository.findbyUserId(Long.parseLong(currentId));
+        Long currentId = getCurrentUserId();
+        return this.todoRepository.findbyUserId(currentId);
     }
 
     public Todo createTodo(@Valid CreateTodoDTO data) {
         Todo newTodo = mapper.map(data, Todo.class);
         User owner = new User();
-        Authentication authenticationObj = SecurityContextHolder.getContext().getAuthentication();
-        String currentId = (String) authenticationObj.getPrincipal();
-        owner.setId(Long.parseLong(currentId));
+        Long currentId = getCurrentUserId();
+        owner.setId(currentId);
         newTodo.setUser(owner);
         return todoRepository.save(newTodo);
     }

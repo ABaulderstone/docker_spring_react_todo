@@ -6,8 +6,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.nology.todo_backend.common.BaseService;
+
 @Service
-public class UserService {
+public class UserService extends BaseService {
 
     private UserRepository repository;
     private ModelMapper mapper;
@@ -29,6 +31,11 @@ public class UserService {
     public User create(CreateUserDTO data) {
         User newUser = mapper.map(data, User.class);
         return this.repository.save(newUser);
+    }
+
+    public User currentUser() throws Exception {
+        Long currentId = getCurrentUserId();
+        return this.loadById(currentId).orElseThrow(() -> new Exception("Could not find user"));
     }
 
 }
