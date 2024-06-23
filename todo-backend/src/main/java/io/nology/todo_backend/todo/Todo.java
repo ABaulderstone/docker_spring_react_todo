@@ -28,4 +28,8 @@ public class Todo extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore()
     private User user;
+
+    @Column(nullable = false)
+    private boolean isComplete = false;
+
 }
