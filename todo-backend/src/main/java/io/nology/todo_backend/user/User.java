@@ -28,6 +28,7 @@ public class User extends BaseEntity {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore()
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
