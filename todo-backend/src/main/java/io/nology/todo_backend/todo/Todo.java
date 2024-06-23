@@ -1,6 +1,6 @@
 package io.nology.todo_backend.todo;
 
-import java.sql.Date;
+import java.util.Date;
 
 import io.nology.todo_backend.common.BaseEntity;
 import io.nology.todo_backend.user.User;
