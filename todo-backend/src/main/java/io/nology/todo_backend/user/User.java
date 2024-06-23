@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.nology.todo_backend.category.Category;
 import io.nology.todo_backend.common.BaseEntity;
 import io.nology.todo_backend.todo.Todo;
 import jakarta.persistence.Column;
@@ -34,5 +35,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore()
     private List<Todo> todos;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore()
+    private List<Category> categories;
 
 }
