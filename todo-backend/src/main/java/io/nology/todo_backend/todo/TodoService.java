@@ -7,18 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import io.nology.todo_backend.category.Category;
+import io.nology.todo_backend.category.CategoryService;
 import io.nology.todo_backend.common.BaseService;
 import io.nology.todo_backend.user.User;
+import io.nology.todo_backend.user.UserService;
 import jakarta.validation.Valid;
 
 @Service
 public class TodoService extends BaseService {
     private final TodoRepository todoRepository;
+    private final CategoryService categoryService;
+    private final UserService userService;
     private final ModelMapper mapper;
 
     @Autowired
-    public TodoService(TodoRepository todoRepository, ModelMapper mapper) {
+    public TodoService(TodoRepository todoRepository, CategoryService categoryService, UserService userService,
+            ModelMapper mapper) {
         this.todoRepository = todoRepository;
+        this.categoryService = categoryService;
+        this.userService = userService;
         this.mapper = mapper;
     }
 
@@ -27,12 +35,14 @@ public class TodoService extends BaseService {
         return this.todoRepository.findbyUserId(currentId);
     }
 
-    public Todo createTodo(@Valid CreateTodoDTO data) {
+    public Todo createTodo(@Valid CreateTodoDTO data) throws Exception {
         Todo newTodo = mapper.map(data, Todo.class);
-        User owner = new User();
         Long currentId = getCurrentUserId();
-        owner.setId(currentId);
+        User owner = userService.loadById(currentId).orElseThrow(() -> new Exception("Owner not found"));
+        Category jokCategory = owner.getCategories().stream().filter((c) -> c.getId() == data.getCategoryId())
+                .findFirst().orElseThrow(() -> new Exception("Category does not belong to owner"));
         newTodo.setUser(owner);
+        newTodo.setCategory(jokCategory);
         return todoRepository.save(newTodo);
     }
 
