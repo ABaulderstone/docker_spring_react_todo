@@ -31,7 +31,7 @@ public class Todo extends BaseEntity {
     @JsonIgnore()
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "category_id", nullable = true)
     private Category category;
 
