@@ -29,7 +29,10 @@ public class ModelMapperConfig {
                 mapping -> mapping.using(new PasswordEncodeConverter(passwordEncoder)).map(RegisterDTO::getPassword,
                         CreateUserDTO::setPassword));
         mapper.typeMap(CreateTodoDTO.class, Todo.class)
-                .addMappings(m -> m.using(new DateConvertor()).map(CreateTodoDTO::getDueDate, Todo::setDueDate));
+                .addMappings(m -> {
+                    m.using(new DateConvertor()).map(CreateTodoDTO::getDueDate, Todo::setDueDate);
+                    m.skip(Todo::setId);
+                });
         return mapper;
     }
 

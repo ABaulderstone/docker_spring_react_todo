@@ -37,12 +37,16 @@ public class TodoService extends BaseService {
 
     public Todo createTodo(@Valid CreateTodoDTO data) throws Exception {
         Todo newTodo = mapper.map(data, Todo.class);
+        newTodo.setId(null);
         Long currentId = getCurrentUserId();
         User owner = userService.loadById(currentId).orElseThrow(() -> new Exception("Owner not found"));
-        Category jokCategory = owner.getCategories().stream().filter((c) -> c.getId() == data.getCategoryId())
-                .findFirst().orElseThrow(() -> new Exception("Category does not belong to owner"));
+        Category jokeCategory = null;
+        if (data.getCategoryId() != null) {
+            jokeCategory = owner.getCategories().stream().filter((c) -> c.getId() == data.getCategoryId())
+                    .findFirst().orElseThrow(() -> new Exception("Category does not belong to owner"));
+        }
         newTodo.setUser(owner);
-        newTodo.setCategory(jokCategory);
+        newTodo.setCategory(jokeCategory);
         return todoRepository.save(newTodo);
     }
 
