@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import io.nology.todo_backend.category.Category;
@@ -17,22 +19,21 @@ import jakarta.validation.Valid;
 @Service
 public class TodoService extends BaseService {
     private final TodoRepository todoRepository;
-    private final CategoryService categoryService;
     private final UserService userService;
     private final ModelMapper mapper;
 
     @Autowired
-    public TodoService(TodoRepository todoRepository, CategoryService categoryService, UserService userService,
+    public TodoService(TodoRepository todoRepository, UserService userService,
             ModelMapper mapper) {
         this.todoRepository = todoRepository;
-        this.categoryService = categoryService;
         this.userService = userService;
         this.mapper = mapper;
     }
 
-    List<Todo> findCurrentUserTodos() {
+    Page<Todo> findCurrentUserTodos(int page, int size) {
         Long currentId = getCurrentUserId();
-        return this.todoRepository.findbyUserId(currentId);
+        Pageable pageable = PageRequest.of(page, size);
+        return this.todoRepository.findbyUserId(currentId, pageable);
     }
 
     public Todo createTodo(@Valid CreateTodoDTO data) throws Exception {
