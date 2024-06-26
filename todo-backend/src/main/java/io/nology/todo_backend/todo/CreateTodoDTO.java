@@ -27,9 +27,4 @@ public class CreateTodoDTO {
     public CreateTodoDTO() {
     }
 
-    @Override
-    public String toString() {
-        return "CreateTodoDTO [title=" + title + ", dueDate=" + dueDate + "]";
-    }
-
 }
