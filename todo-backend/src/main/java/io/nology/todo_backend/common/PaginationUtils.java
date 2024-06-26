@@ -19,8 +19,8 @@ public class PaginationUtils {
         @SuppressWarnings("unchecked")
         PaginatedResponse<T> response = mapper.map(pageData, PaginatedResponse.class);
         int totalPages = pageData.getTotalPages();
-        response.setNextPage(requestedPage < totalPages ? requestedPage - 1 : null);
-        response.setPrevPage(requestedPage == 1 ? null : requestedPage + 1);
+        response.setNextPage(requestedPage < totalPages ? requestedPage + 1 : null);
+        response.setPrevPage(requestedPage == 1 ? null : requestedPage - 1);
         response.setCurrentPage(requestedPage);
         response.setTotalItems(pageData.getTotalElements());
         return response;
