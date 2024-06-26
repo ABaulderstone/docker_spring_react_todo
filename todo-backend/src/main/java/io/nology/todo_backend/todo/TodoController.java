@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.nology.todo_backend.common.PaginatedResponse;
+import io.nology.todo_backend.common.PaginationUtils;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -20,18 +22,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/todos")
 public class TodoController {
     private final TodoService todoService;
+    private final PaginationUtils paginationUtils;
 
     @Autowired
-    public TodoController(TodoService todoService) {
+    public TodoController(TodoService todoService, PaginationUtils paginationUtils) {
         this.todoService = todoService;
+        this.paginationUtils = paginationUtils;
     }
 
     @GetMapping()
-    public ResponseEntity<Page<Todo>> findAll(@RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<PaginatedResponse<Todo>> findAll(@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size) {
 
         Page<Todo> todos = this.todoService.findCurrentUserTodos(page - 1, size);
-        return new ResponseEntity<>(todos, HttpStatus.OK);
+        PaginatedResponse<Todo> response = paginationUtils.generatePaginatedResponse(todos, page);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping()

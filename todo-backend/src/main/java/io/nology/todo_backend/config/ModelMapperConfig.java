@@ -11,9 +11,11 @@ import org.modelmapper.PropertyMap;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import io.nology.todo_backend.auth.RegisterDTO;
+import io.nology.todo_backend.common.PaginatedResponse;
 import io.nology.todo_backend.todo.CreateTodoDTO;
 import io.nology.todo_backend.todo.Todo;
 import io.nology.todo_backend.user.CreateUserDTO;
