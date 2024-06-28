@@ -11,8 +11,10 @@ import io.nology.todo_backend.auth.JwtService;
 import io.nology.todo_backend.config.TestDataLoader;
 import io.restassured.RestAssured;
 import io.restassured.specification.RequestSpecification;
+import lombok.Getter;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Getter
 public abstract class EndToEndTest {
     @LocalServerPort
     public int port;

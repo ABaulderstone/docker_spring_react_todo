@@ -15,6 +15,7 @@ import io.nology.todo_backend.todo.Todo;
 import io.nology.todo_backend.todo.TodoRepository;
 import io.nology.todo_backend.user.User;
 import io.nology.todo_backend.user.UserRepository;
+import lombok.Getter;
 
 @Component
 public class TestDataLoader {
@@ -39,6 +40,10 @@ public class TestDataLoader {
 
     public User getPlainUser() {
         return users.get("plainUser");
+    }
+
+    public String getRawPassword(String key) {
+        return rawPasswords.get(key);
     }
 
     public User getUser(String key) {

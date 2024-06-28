@@ -13,6 +13,7 @@ import io.nology.todo_backend.user.User;
 import io.nology.todo_backend.user.UserService;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
+import lombok.Getter;
 
 @Service
 public class AuthService {
