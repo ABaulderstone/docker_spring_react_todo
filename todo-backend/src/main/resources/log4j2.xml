@@ -3,6 +3,7 @@
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
         <Property name="APP_LOG_ROOT">/app/logs</Property>
+        <Property name="IS_CI_ENV">${env:CI_ENVIRONMENT:-false}</Property>
     </Properties>
     
     <Appenders>
@@ -12,7 +13,10 @@
         
         <RollingFile name="appLog"
                      fileName="${APP_LOG_ROOT}/application-${date:yyyy-MM-dd}.log"
-                     filePattern="${APP_LOG_ROOT}/application-%d{yyyy-MM-dd}-%i.log">
+                     filePattern="${APP_LOG_ROOT}/application-%d{yyyy-MM-dd}-%i.log"
+                     include="${IS_CI_ENV:false}"
+                     >
+                     
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
@@ -23,7 +27,8 @@
         
         <RollingFile name="errorLog"
                      fileName="${APP_LOG_ROOT}/error-${date:yyyy-MM-dd}.log"
-                     filePattern="${APP_LOG_ROOT}/error-%d{yyyy-MM-dd}-%i.log">
+                     filePattern="${APP_LOG_ROOT}/error-%d{yyyy-MM-dd}-%i.log"
+                     include="${IS_CI_ENV:false}">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
@@ -36,8 +41,8 @@
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="appLog"/>
-            <AppenderRef ref="errorLog" level="error"/>
+            <AppenderRef ref="appLog" include="${IS_CI_ENV:false}"/>
+            <AppenderRef ref="errorLog" level="error" include="${IS_CI_ENV:false}"/>
         </Root>
     </Loggers>
 </Configuration>
