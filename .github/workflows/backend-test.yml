@@ -1,0 +1,46 @@
+name: Backend Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('todo-backend/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Build with Maven
+        run: mvn clean install
+        working-directory: todo-backend
+        env:
+          JWT_SECRET_KEY: 94e246493200f07be7d94a2b7ca9cfde1488aae068bd80cd2b9706ab57bc33eb
+          JWT_EXPIRY: 3600000
+
+      - name: Run tests
+        run: mvn test
+        working-directory: todo-backend
+        env:
+          JWT_SECRET_KEY: 94e246493200f07be7d94a2b7ca9cfde1488aae068bd80cd2b9706ab57bc33eb
+          JWT_EXPIRY: 3600000
