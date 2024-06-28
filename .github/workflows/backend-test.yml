@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
   pull_request:
     branches:
       - main
@@ -44,3 +43,10 @@ jobs:
         env:
           JWT_SECRET_KEY: 94e246493200f07be7d94a2b7ca9cfde1488aae068bd80cd2b9706ab57bc33eb
           JWT_EXPIRY: 3600000
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: todo-backend/target/surefire-reports/
