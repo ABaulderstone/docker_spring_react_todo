@@ -8,10 +8,10 @@ import io.nology.todo_backend.config.TestDataLoader;
 import io.nology.todo_backend.user.User;
 import io.restassured.http.ContentType;
 
-public class AuthEndToEnd extends EndToEndTest {
+public class AuthEndToEndTest extends EndToEndTest {
 
     @Autowired
-    public AuthEndToEnd(TestDataLoader dataLoader, JwtService jwtService) {
+    public AuthEndToEndTest(TestDataLoader dataLoader, JwtService jwtService) {
         super(dataLoader, jwtService);
 
     }

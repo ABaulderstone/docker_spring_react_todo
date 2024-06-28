@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
   pull_request:
     branches:
       - main
@@ -13,6 +12,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CI_ENVIRONMENT: true
+      CI_LOG_DIRECTORY: /tmp/logs
+      JWT_SECRET_KEY: 94e246493200f07be7d94a2b7ca9cfde1488aae068bd80cd2b9706ab57bc33eb
+      JWT_EXPIRY: 3600000
 
     steps:
       - name: Checkout repository
@@ -34,13 +38,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         working-directory: todo-backend
-        env:
-          JWT_SECRET_KEY: 94e246493200f07be7d94a2b7ca9cfde1488aae068bd80cd2b9706ab57bc33eb
-          JWT_EXPIRY: 3600000
 
       - name: Run tests
         run: mvn test
         working-directory: todo-backend
-        env:
-          JWT_SECRET_KEY: 94e246493200f07be7d94a2b7ca9cfde1488aae068bd80cd2b9706ab57bc33eb
-          JWT_EXPIRY: 3600000
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: todo-backend/target/surefire-reports/
