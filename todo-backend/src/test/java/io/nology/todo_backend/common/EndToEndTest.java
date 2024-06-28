@@ -39,11 +39,15 @@ public abstract class EndToEndTest {
 
     @AfterEach
     public void tearDown() {
-
+        this.dataLoader.clearData();
     }
 
     public RequestSpecification givenUserToken() {
         return RestAssured.given().header("Authorization", "Bearer " + this.plainUserToken);
+    }
+
+    public RequestSpecification givenNoAuthHeader() {
+        return RestAssured.given().header("Authorization", "Bearer ");
     }
 
 }
