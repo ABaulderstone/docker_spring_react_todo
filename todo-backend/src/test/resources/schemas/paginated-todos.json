@@ -11,7 +11,10 @@
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" },
           "title": { "type": "string" },
-          "dueDate": { "type": "string", "format": "date-time" },
+          "dueDate": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
           "category": {
             "type": "object",
             "properties": {
