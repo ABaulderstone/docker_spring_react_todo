@@ -18,13 +18,13 @@ public class UserEndToEndTest extends EndToEndTest {
 
     @Test
     public void userWithTokenCanAccessCurrentPage() {
-        givenUserToken().when().get("/users/current").then().statusCode(200)
+        givenUserToken().get("/users/current").then().statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/user-schema.json"));
     }
 
     @Test
-    public void userWithNoAuthTokenCannotAccessCurrentPage() {
-        givenNoAuthHeader().when().get("/users/current").then().statusCode(401);
+    public void requestWithNoAuthTokenCannotAccessCurrentPage() {
+        givenNoAuthHeader().get("/users/current").then().statusCode(401);
     }
 
 }

@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "content": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "title": { "type": "string" },
+          "dueDate": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "category": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "createdAt": { "type": "string", "format": "date-time" },
+              "updatedAt": { "type": "string", "format": "date-time" },
+              "name": { "type": "string" },
+              "color": {
+                "type": "string",
+                "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+              }
+            },
+            "required": ["id", "createdAt", "updatedAt", "name", "color"]
+          },
+          "complete": { "type": "boolean" }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "title",
+          "dueDate",
+          "category",
+          "complete"
+        ]
+      }
+    },
+    "currentPage": { "type": "integer" },
+    "totalItems": { "type": "integer" },
+    "totalPages": { "type": "integer" },
+    "size": { "type": "integer" },
+    "nextPage": { "type": ["integer", "null"] },
+    "prevPage": { "type": ["integer", "null"] }
+  },
+  "required": [
+    "content",
+    "currentPage",
+    "totalItems",
+    "totalPages",
+    "size",
+    "nextPage",
+    "prevPage"
+  ]
+}

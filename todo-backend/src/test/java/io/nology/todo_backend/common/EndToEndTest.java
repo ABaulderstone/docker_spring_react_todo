@@ -22,6 +22,7 @@ public abstract class EndToEndTest {
     private final TestDataLoader dataLoader;
     private final JwtService jwtService;
     private String plainUserToken;
+    private String maxCategoriesToken;
 
     @Autowired
     public EndToEndTest(TestDataLoader dataLoader, JwtService jwtService) {
@@ -36,12 +37,18 @@ public abstract class EndToEndTest {
         this.dataLoader.loadData();
         CustomUserDetails userDetails = new CustomUserDetails(this.dataLoader.getPlainUser());
         this.plainUserToken = this.jwtService.generateToken(userDetails);
+        CustomUserDetails maxCategoryUserDetails = new CustomUserDetails(this.dataLoader.getUser("maxCategoryUser"));
+        this.maxCategoriesToken = this.jwtService.generateToken(maxCategoryUserDetails);
 
     }
 
     @AfterEach
     public void tearDown() {
         this.dataLoader.clearData();
+    }
+
+    public RequestSpecification givenMaxCategoryUserToken() {
+        return RestAssured.given().header("Authorization", "Bearer " + this.maxCategoriesToken);
     }
 
     public RequestSpecification givenUserToken() {
