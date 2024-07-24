@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.nology.todo_backend.category.Category;
 import io.nology.todo_backend.category.CategoryRepository;
@@ -48,6 +49,17 @@ public class TestDataLoader {
 
     public User getUser(String key) {
         return users.get(key);
+    }
+
+    @Transactional(readOnly = true)
+    public User getPlainUserWithCategories() {
+        User user = userRepository.findByEmail("user1@test.com")
+                .orElseThrow(() -> new RuntimeException("Plain user not found"));
+
+        // Force initialization of categories
+        user.getCategories().size();
+
+        return user;
     }
 
     public void loadData() {
