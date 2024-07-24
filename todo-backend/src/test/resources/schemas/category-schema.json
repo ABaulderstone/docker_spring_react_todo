@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "type": "string"
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    }
+  },
+  "required": ["id", "createdAt", "updatedAt", "name", "color"]
+}
