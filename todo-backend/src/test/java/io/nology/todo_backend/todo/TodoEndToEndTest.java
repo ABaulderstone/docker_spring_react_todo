@@ -15,6 +15,7 @@ import io.nology.todo_backend.common.EndToEndTest;
 import io.nology.todo_backend.config.TestDataLoader;
 import io.nology.todo_backend.user.User;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 
 public class TodoEndToEndTest extends EndToEndTest {
 
@@ -39,14 +40,27 @@ public class TodoEndToEndTest extends EndToEndTest {
     @Test
     public void loggedInUserCanCreateTodo() {
         User userWithcats = this.getDataLoader().getPlainUserWithCategories();
+        System.out.println("User ID: " + userWithcats.getId());
+        System.out.println("Categories: " + userWithcats.getCategories());
+
         LocalDate futureDate = LocalDate.now().plusDays(7);
         String formattedDate = futureDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        System.out.println("Due date set to: " + formattedDate);
+
         CreateTodoDTO body = new CreateTodoDTO();
-        // TODO: less flimsy setting category
         body.setCategoryId(userWithcats.getCategories().get(0).getId());
         body.setTitle("Test");
         body.setDueDate(formattedDate);
-        givenUserToken().contentType(ContentType.JSON).body(body).post("/todos").then().log().all().statusCode(201);
-    }
 
+        Response response = givenUserToken()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .post("/todos");
+
+        System.out.println("Response status: " + response.getStatusCode());
+        System.out.println("Response body: " + response.getBody().asString());
+
+        response.then().log().all().statusCode(201);
+
+    }
 }
