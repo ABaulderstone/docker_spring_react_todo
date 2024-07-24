@@ -41,7 +41,7 @@ public class TodoEndToEndTest extends EndToEndTest {
     public void loggedInUserCanCreateTodo() {
         User userWithcats = this.getDataLoader().getPlainUserWithCategories();
         System.out.println("User ID: " + userWithcats.getId());
-        System.out.println("Categories: " + userWithcats.getCategories());
+        System.out.println("Categories: " + userWithcats.getCategories().get(0));
 
         LocalDate futureDate = LocalDate.now().plusDays(7);
         String formattedDate = futureDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
