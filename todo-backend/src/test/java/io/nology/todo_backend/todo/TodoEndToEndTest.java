@@ -39,8 +39,8 @@ public class TodoEndToEndTest extends EndToEndTest {
     @Test
     public void loggedInUserCanCreateTodo() {
         User userWithcats = this.getDataLoader().getPlainUserWithCategories();
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
-        String formattedDate = tomorrow.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate futureDate = LocalDate.now().plusDays(7);
+        String formattedDate = futureDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         CreateTodoDTO body = new CreateTodoDTO();
         // TODO: less flimsy setting category
         body.setCategoryId(userWithcats.getCategories().get(0).getId());
