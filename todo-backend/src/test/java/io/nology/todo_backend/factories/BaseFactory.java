@@ -14,6 +14,4 @@ public abstract class BaseFactory<T> {
 
     public abstract T create();
 
-    public abstract T createAndSave();
-
 }

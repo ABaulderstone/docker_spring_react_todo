@@ -10,9 +10,8 @@ import io.restassured.http.ContentType;
 public class AuthEndToEndTest extends EndToEndTest<AuthFixture> {
 
     @Autowired
-    public AuthEndToEndTest(AuthFixture fixture, JwtService jwtService) {
-        super(fixture, jwtService);
-
+    public AuthEndToEndTest(AuthFixture fixture) {
+        super(fixture);
     }
 
     @Test

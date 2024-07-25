@@ -36,9 +36,8 @@ public class UserFactory extends BaseFactory<User> {
 
     }
 
-    @Override
-    public User createAndSave() {
-        return this.userRepository.save(create());
+    public void save(User user) {
+        this.userRepository.save(user);
     }
 
 }

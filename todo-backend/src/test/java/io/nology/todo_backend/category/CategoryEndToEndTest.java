@@ -1,22 +1,28 @@
 package io.nology.todo_backend.category;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.mockito.ArgumentMatchers.eq;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.Matchers.*;
 
-import io.nology.todo_backend.auth.JwtService;
 import io.nology.todo_backend.common.EndToEndTest;
-import io.nology.todo_backend.config.TestDataLoader;
+import io.nology.todo_backend.fixtures.CategoryFixture;
+import io.nology.todo_backend.user.User;
 import io.restassured.http.ContentType;
 
-public class CategoryEndToEndTest extends EndToEndTest {
+public class CategoryEndToEndTest extends EndToEndTest<CategoryFixture> {
+
+    User userWithMaxCategories;
+    User userWithOneCategory;
+    User userWithNoCategories;
 
     @Autowired
-    public CategoryEndToEndTest(TestDataLoader dataLoader, JwtService jwtService) {
-        super(dataLoader, jwtService);
+    public CategoryEndToEndTest(CategoryFixture fixture) {
+        super(fixture);
+        this.userWithMaxCategories = getFixture().getUserWithMaxCategories();
+        this.userWithOneCategory = getFixture().getUserWithOneCategory();
+
     }
 
     @Test
@@ -27,12 +33,12 @@ public class CategoryEndToEndTest extends EndToEndTest {
 
     @Test
     public void loggedInUserCanSeeTheirCategories() {
-        givenUserToken().when().get("/categories")
+        givenUserToken(userWithOneCategory.getEmail()).when().get("/categories")
                 .then().statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/categories-array.json"))
                 .body("size()", equalTo(1));
 
-        givenMaxCategoryUserToken().when().get("/categories")
+        givenUserToken(userWithMaxCategories.getEmail())
                 .then().statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/categories-array.json"))
                 .body("size()", equalTo(8));
@@ -48,7 +54,7 @@ public class CategoryEndToEndTest extends EndToEndTest {
         CreateCategoryDTO body = new CreateCategoryDTO();
         body.setName("test");
         body.setColor("#ffffff");
-        givenUserToken().contentType(ContentType.JSON).body(body).post("/categories")
+        givenUserToken(userWithOneCategory.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
                 .then()
                 .statusCode(201)
                 .body(matchesJsonSchemaInClasspath("schemas/category-schema.json"));
@@ -60,7 +66,8 @@ public class CategoryEndToEndTest extends EndToEndTest {
         body.setName("test");
         body.setColor("#ffffff");
         // TODO: Generate better error response
-        givenMaxCategoryUserToken().contentType(ContentType.JSON).body(body).post("/categories").then().statusCode(500);
+        givenUserToken(userWithMaxCategories.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
+                .then().statusCode(500);
     }
 
     @Test
@@ -68,7 +75,8 @@ public class CategoryEndToEndTest extends EndToEndTest {
         CreateCategoryDTO body = new CreateCategoryDTO();
         body.setName("test");
         body.setColor("#fffff");
-        givenUserToken().contentType(ContentType.JSON).body(body).post("/categories").then().statusCode(400);
+        givenUserToken(userWithOneCategory.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
+                .then().statusCode(400);
     }
 
     @Test
@@ -76,7 +84,8 @@ public class CategoryEndToEndTest extends EndToEndTest {
         CreateCategoryDTO body = new CreateCategoryDTO();
         body.setName("");
         body.setColor("#ffffff");
-        givenUserToken().contentType(ContentType.JSON).body(body).post("/categories").then().statusCode(400);
+        givenUserToken(userWithOneCategory.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
+                .then().statusCode(400);
     }
 
 }
