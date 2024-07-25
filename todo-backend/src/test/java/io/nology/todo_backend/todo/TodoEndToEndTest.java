@@ -15,12 +15,10 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 public class TodoEndToEndTest extends EndToEndTest<TodoFixture> {
-    private User user;
 
     @Autowired
     public TodoEndToEndTest(TodoFixture fixture) {
         super(fixture);
-        user = getFixture().getUser();
     }
 
     @Test
@@ -32,7 +30,7 @@ public class TodoEndToEndTest extends EndToEndTest<TodoFixture> {
     @Test
     public void loggedInUserCanAccessTheirTodos() {
 
-        givenUserToken(user.getEmail()).get("/todos").then().statusCode(200)
+        givenUserToken(getFixture().getUser().getEmail()).get("/todos").then().statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/paginated-todos.json"));
     }
 
@@ -43,11 +41,12 @@ public class TodoEndToEndTest extends EndToEndTest<TodoFixture> {
         String formattedDate = futureDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         CreateTodoDTO body = new CreateTodoDTO();
-        body.setCategoryId(user.getCategories().get(0).getId());
+        Long categoryId = getFixture().fetchCategoriesForUser(getFixture().getUser()).getFirst().getId();
+        body.setCategoryId(categoryId);
         body.setTitle("Test");
         body.setDueDate(formattedDate);
 
-        Response response = givenUserToken(user.getEmail())
+        Response response = givenUserToken(getFixture().getUser().getEmail())
                 .contentType(ContentType.JSON)
                 .body(body)
                 .post("/todos");

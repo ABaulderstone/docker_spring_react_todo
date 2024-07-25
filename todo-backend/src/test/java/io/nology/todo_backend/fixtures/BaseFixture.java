@@ -2,6 +2,7 @@ package io.nology.todo_backend.fixtures;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,8 +59,8 @@ public abstract class BaseFixture {
 
     protected User createUserWithToken() {
         User user = this.userFactory.create();
-        generateAndStoreToken(user);
         this.userFactory.save(user);
+        generateAndStoreToken(user);
         return user;
     }
 
@@ -77,9 +78,14 @@ public abstract class BaseFixture {
 
     }
 
+    public List<Category> fetchCategoriesForUser(User user) {
+        return this.categoryRepository.findbyUserId(user.getId());
+    }
+
     protected void createTodosForUser(int n, User user) {
+        List<Category> categories = fetchCategoriesForUser(user);
         for (int i = 0; i < n; i++) {
-            todoFactory.createForUser(user);
+            todoFactory.createForUser(user, categories);
         }
     }
 

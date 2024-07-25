@@ -30,10 +30,9 @@ public class TodoFactory extends BaseFactory<Todo> {
         return newTodo;
     }
 
-    public Todo createForUser(User user) {
+    public Todo createForUser(User user, List<Category> categories) {
         Todo newTodo = create();
         Random rand = new Random();
-        List<Category> categories = user.getCategories();
         newTodo.setUser(user);
         newTodo.setCategory(categories.get(rand.nextInt(categories.size())));
         return this.todoRepository.save(newTodo);

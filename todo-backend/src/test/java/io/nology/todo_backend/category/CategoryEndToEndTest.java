@@ -13,15 +13,9 @@ import io.restassured.http.ContentType;
 
 public class CategoryEndToEndTest extends EndToEndTest<CategoryFixture> {
 
-    User userWithMaxCategories;
-    User userWithOneCategory;
-    User userWithNoCategories;
-
     @Autowired
     public CategoryEndToEndTest(CategoryFixture fixture) {
         super(fixture);
-        this.userWithMaxCategories = getFixture().getUserWithMaxCategories();
-        this.userWithOneCategory = getFixture().getUserWithOneCategory();
 
     }
 
@@ -33,12 +27,12 @@ public class CategoryEndToEndTest extends EndToEndTest<CategoryFixture> {
 
     @Test
     public void loggedInUserCanSeeTheirCategories() {
-        givenUserToken(userWithOneCategory.getEmail()).when().get("/categories")
+        givenUserToken(getFixture().getUserWithOneCategory().getEmail()).when().get("/categories")
                 .then().statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/categories-array.json"))
                 .body("size()", equalTo(1));
 
-        givenUserToken(userWithMaxCategories.getEmail())
+        givenUserToken(getFixture().getUserWithMaxCategories().getEmail())
                 .then().statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/categories-array.json"))
                 .body("size()", equalTo(8));
@@ -54,7 +48,8 @@ public class CategoryEndToEndTest extends EndToEndTest<CategoryFixture> {
         CreateCategoryDTO body = new CreateCategoryDTO();
         body.setName("test");
         body.setColor("#ffffff");
-        givenUserToken(userWithOneCategory.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
+        givenUserToken(getFixture().getUserWithNoCategories().getEmail()).contentType(ContentType.JSON).body(body)
+                .post("/categories")
                 .then()
                 .statusCode(201)
                 .body(matchesJsonSchemaInClasspath("schemas/category-schema.json"));
@@ -66,7 +61,8 @@ public class CategoryEndToEndTest extends EndToEndTest<CategoryFixture> {
         body.setName("test");
         body.setColor("#ffffff");
         // TODO: Generate better error response
-        givenUserToken(userWithMaxCategories.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
+        givenUserToken(getFixture().getUserWithMaxCategories().getEmail()).contentType(ContentType.JSON).body(body)
+                .post("/categories")
                 .then().statusCode(500);
     }
 
@@ -75,7 +71,8 @@ public class CategoryEndToEndTest extends EndToEndTest<CategoryFixture> {
         CreateCategoryDTO body = new CreateCategoryDTO();
         body.setName("test");
         body.setColor("#fffff");
-        givenUserToken(userWithOneCategory.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
+        givenUserToken(getFixture().getUserWithNoCategories().getEmail()).contentType(ContentType.JSON).body(body)
+                .post("/categories")
                 .then().statusCode(400);
     }
 
@@ -84,7 +81,8 @@ public class CategoryEndToEndTest extends EndToEndTest<CategoryFixture> {
         CreateCategoryDTO body = new CreateCategoryDTO();
         body.setName("");
         body.setColor("#ffffff");
-        givenUserToken(userWithOneCategory.getEmail()).contentType(ContentType.JSON).body(body).post("/categories")
+        givenUserToken(getFixture().getUserWithNoCategories().getEmail()).contentType(ContentType.JSON).body(body)
+                .post("/categories")
                 .then().statusCode(400);
     }
 

@@ -12,12 +12,16 @@ public class CategoryFixture extends BaseFixture {
     @Getter
     private User userWithOneCategory;
 
+    @Getter
+    private User userWithNoCategories;
+
     @Override
     public void setup() {
         userWithMaxCategories = createUserWithToken();
         createUniqueCategoriesForUser(8, userWithMaxCategories);
         userWithOneCategory = createUserWithToken();
         createUniqueCategoriesForUser(1, userWithOneCategory);
+        userWithNoCategories = createUserWithToken();
 
     }
 
