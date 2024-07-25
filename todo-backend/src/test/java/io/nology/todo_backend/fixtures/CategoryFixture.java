@@ -1,13 +1,11 @@
 package io.nology.todo_backend.fixtures;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import org.springframework.stereotype.Component;
 
-import io.nology.todo_backend.category.Category;
 import io.nology.todo_backend.user.User;
 import lombok.Getter;
 
+@Component
 public class CategoryFixture extends BaseFixture {
     @Getter
     private User userWithMaxCategories;

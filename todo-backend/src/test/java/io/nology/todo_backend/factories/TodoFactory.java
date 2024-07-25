@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.stereotype.Component;
+
 import com.github.javafaker.Faker;
 
 import io.nology.todo_backend.category.Category;
@@ -11,6 +13,7 @@ import io.nology.todo_backend.todo.Todo;
 import io.nology.todo_backend.todo.TodoRepository;
 import io.nology.todo_backend.user.User;
 
+@Component
 public class TodoFactory extends BaseFactory<Todo> {
     private TodoRepository todoRepository;
 

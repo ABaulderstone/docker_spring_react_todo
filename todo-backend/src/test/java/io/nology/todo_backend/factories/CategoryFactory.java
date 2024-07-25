@@ -1,11 +1,14 @@
 package io.nology.todo_backend.factories;
 
+import org.springframework.stereotype.Component;
+
 import com.github.javafaker.Faker;
 
 import io.nology.todo_backend.category.Category;
 import io.nology.todo_backend.category.CategoryRepository;
 import io.nology.todo_backend.user.User;
 
+@Component
 public class CategoryFactory extends BaseFactory<Category> {
     private CategoryRepository categoryRepository;
 

@@ -3,6 +3,7 @@ package io.nology.todo_backend.factories;
 import java.util.HashMap;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.github.javafaker.Faker;
 
@@ -10,6 +11,7 @@ import io.nology.todo_backend.user.User;
 import io.nology.todo_backend.user.UserRepository;
 import lombok.Getter;
 
+@Component
 public class UserFactory extends BaseFactory<User> {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -34,6 +36,10 @@ public class UserFactory extends BaseFactory<User> {
         rawPasswords.put(email, rawPassword);
         return newUser;
 
+    }
+
+    public User createAndSave() {
+        return this.userRepository.save(create());
     }
 
     public void save(User user) {

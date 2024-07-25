@@ -1,12 +1,11 @@
 package io.nology.todo_backend.fixtures;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.nology.todo_backend.auth.CustomUserDetails;
@@ -20,6 +19,7 @@ import io.nology.todo_backend.todo.TodoRepository;
 import io.nology.todo_backend.user.User;
 import io.nology.todo_backend.user.UserRepository;
 
+@Component
 public abstract class BaseFixture {
     private HashMap<String, String> tokens;
 
