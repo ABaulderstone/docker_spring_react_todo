@@ -4,34 +4,32 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.nology.todo_backend.common.EndToEndTest;
-import io.nology.todo_backend.config.TestDataLoader;
-import io.nology.todo_backend.user.User;
+import io.nology.todo_backend.fixtures.AuthFixture;
 import io.restassured.http.ContentType;
 
-public class AuthEndToEndTest extends EndToEndTest {
+public class AuthEndToEndTest extends EndToEndTest<AuthFixture> {
 
     @Autowired
-    public AuthEndToEndTest(TestDataLoader dataLoader, JwtService jwtService) {
-        super(dataLoader, jwtService);
-
+    public AuthEndToEndTest(AuthFixture fixture) {
+        super(fixture);
     }
 
     @Test
     public void existingUserCanLoginWithCorrectPassword() {
-        User plainUser = getDataLoader().getUser("plainUser");
-        String password = getDataLoader().getRawPassword("plainUser");
+        String email = getFixture().getUser().getEmail();
+        String rawPassword = getFixture().getRawPasswords().get(email);
         LoginDTO body = new LoginDTO();
-        body.setEmail(plainUser.getEmail());
-        body.setPassword(password);
+        body.setEmail(email);
+        body.setPassword(rawPassword);
 
         givenNoAuthHeader().contentType(ContentType.JSON).body(body).post("/auth/login").then().statusCode(200);
     }
 
     @Test
     public void existingUserCanNotLoginWithIncorrectPassword() {
-        User plainUser = getDataLoader().getUser("plainUser");
+        String email = getFixture().getUser().getEmail();
         LoginDTO body = new LoginDTO();
-        body.setEmail(plainUser.getEmail());
+        body.setEmail(email);
         body.setPassword("banana");
         givenNoAuthHeader().contentType(ContentType.JSON).body(body).post("/auth/login").then().statusCode(401);
     }
