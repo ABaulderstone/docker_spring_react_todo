@@ -34,7 +34,6 @@ public class UserServiceUnitTest {
 
     @BeforeEach
     void setUp() {
-
         MockitoAnnotations.openMocks(this);
     }
 
