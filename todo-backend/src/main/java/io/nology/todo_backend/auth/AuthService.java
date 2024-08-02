@@ -1,7 +1,5 @@
 package io.nology.todo_backend.auth;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +11,6 @@ import io.nology.todo_backend.user.User;
 import io.nology.todo_backend.user.UserService;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
-import lombok.Getter;
 
 @Service
 public class AuthService {
