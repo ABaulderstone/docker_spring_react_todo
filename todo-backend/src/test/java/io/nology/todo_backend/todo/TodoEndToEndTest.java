@@ -41,7 +41,7 @@ public class TodoEndToEndTest extends EndToEndTest<TodoFixture> {
         String formattedDate = futureDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         CreateTodoDTO body = new CreateTodoDTO();
-        Long categoryId = getFixture().fetchCategoriesForUser(getFixture().getUser()).getFirst().getId();
+        Long categoryId = getFixture().fetchCategoriesForUser(getFixture().getUser()).get(0).getId();
         body.setCategoryId(categoryId);
         body.setTitle("Test");
         body.setDueDate(formattedDate);
