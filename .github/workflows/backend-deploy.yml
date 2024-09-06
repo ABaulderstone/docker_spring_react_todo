@@ -29,10 +29,10 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        working-directory: ./backend # Navigate to the backend directory
+        working-directory: ./todo-backend
         run: mvn clean package -DskipTests
 
       - name: Deploy to App Engine
-        working-directory: ./backend # Ensure deployment happens from the backend folder
+        working-directory: ./todo-backend
         run: |
           gcloud app deploy --quiet --project ${{ secrets.GCP_PROJECT_ID }}
