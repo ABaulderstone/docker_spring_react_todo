@@ -35,4 +35,4 @@ jobs:
       - name: Deploy to App Engine
         working-directory: ./todo-backend
         run: |
-          gcloud app deploy --quiet --project ${{ secrets.GCP_PROJECT_ID }}
+          gcloud app deploy --verbosity=debug --project ${{ secrets.GCP_PROJECT_ID }}

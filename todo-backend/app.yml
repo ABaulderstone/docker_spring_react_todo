@@ -1,6 +1,9 @@
 runtime: java17
 instance_class: F1
 automatic_scaling:
-  target_cpu_utilization: 0.5
   min_instances: 0
   max_instances: 1
+  target_cpu_utilization: 0.5
+handlers:
+  - url: /.*
+    script: this field is required, but ignored
