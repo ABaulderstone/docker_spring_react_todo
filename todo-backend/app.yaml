@@ -7,3 +7,10 @@ automatic_scaling:
 handlers:
   - url: /.*
     script: this field is required, but ignored
+env_variables:
+  DATASOURCE_URL: ${sm://DATASOURCE_URL}
+  DB_NAME: ${sm://DB_NAME}
+  DB_PASSWORD: ${sm://DB_PASSWORD}
+  DB_USER: ${sm://DB_USER}
+  JWT_EXPIRY: ${sm://JWT_EXPIRY}
+  JWT_SECRET_KEY: ${sm://JWT_SECRET_KEY}
