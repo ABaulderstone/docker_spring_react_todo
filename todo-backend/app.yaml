@@ -8,6 +8,7 @@ handlers:
   - url: /.*
     script: this field is required, but ignored
 env_variables:
+  SPRING_PROFILES_ACTIVE: 'prod'
   DATASOURCE_URL: ${sm://DATASOURCE_URL}
   DB_NAME: ${sm://DB_NAME}
   DB_PASSWORD: ${sm://DB_PASSWORD}

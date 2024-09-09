@@ -19,6 +19,10 @@
 	</properties>
 	<dependencies>
 		<!-- Spring Boot Starter with logging excluded -->
+
+
+      
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -131,11 +135,6 @@
     	<version>5.3.1</version>
     	<scope>test</scope>
 	</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
