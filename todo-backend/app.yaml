@@ -9,7 +9,7 @@ handlers:
     script: this field is required, but ignored
 env_variables:
   SPRING_PROFILES_ACTIVE: 'prod'
-  DATASOURCE_URL: ${sm://DATASOURCE_URL}
+  DATASOURCE_URL: jdbc:postgresql:///todo_app?cloudSqlInstance=todo-434700:us-central1:spring-todo-deployment
   DB_NAME: ${sm://DB_NAME}
   DB_PASSWORD: ${sm://DB_PASSWORD}
   DB_USER: ${sm://DB_USER}
