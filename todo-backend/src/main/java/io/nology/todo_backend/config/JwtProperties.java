@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
     private String secretKey;
-    private long expirationTime;
+    private final long expirationTime = 86400000; // 24 hours in milliseconds
 
     public String getSecretKey() {
         return secretKey;
@@ -20,9 +20,5 @@ public class JwtProperties {
 
     public long getExpirationTime() {
         return expirationTime;
-    }
-
-    public void setExpirationTime(long expirationTime) {
-        this.expirationTime = expirationTime;
     }
 }
